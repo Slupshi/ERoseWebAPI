@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 using ERoseWebAPI.Data;
+using ERoseWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -58,6 +59,9 @@ namespace ERoseWebAPI
             });
 
             services.AddDbContext<ERoseDbContext>();
+            services.AddScoped<IAccidentService, AccidentService>();
+            services.AddScoped<IHeroService, HeroService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
