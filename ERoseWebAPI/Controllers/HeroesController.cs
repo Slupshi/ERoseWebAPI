@@ -1,8 +1,7 @@
-﻿using ERoseWebAPI.Data;
+﻿using ERoseWebAPI.DTO.Responses;
 using ERoseWebAPI.Models;
 using ERoseWebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ERoseWebAPI.Controllers
 {
@@ -10,113 +9,112 @@ namespace ERoseWebAPI.Controllers
     [ApiController]
     public class HeroesController : ControllerBase
     {
-        private readonly ERoseDbContext _context;
         private readonly IHeroService _heroService;
 
-        public HeroesController(ERoseDbContext context, IHeroService heroService)
+        public HeroesController(IHeroService heroService)
         {
-            _context = context;
             _heroService = heroService;
         }
 
-        // GET: api/Heroes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hero>>> GetHeroes()
-        {
-            if (_context.Heroes == null)
-            {
-                return NotFound();
-            }
-            return await _context.Heroes.ToListAsync();
-        }
-
-        // GET: api/Heroes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hero>> GetHero(int id)
+        public async Task<ActionResult<HeroesResponse>> GetHeroAsync(int id)
         {
-            if (_context.Heroes == null)
+            if (!await _heroService.HeroExistsAsync(id))
             {
-                return NotFound();
+                return NotFound($"No Hero with id {id}");
             }
-            var hero = await _context.Heroes.FindAsync(id);
+
+            Hero? hero = await _heroService.GetHeroAsync(id);
 
             if (hero == null)
             {
-                return NotFound();
+                return NotFound($"No Hero with id {id}");
             }
 
-            return hero;
+            return Ok(new HeroResponse(hero));
         }
 
-        // PUT: api/Heroes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpGet]
+        public async Task<ActionResult<HeroesResponse>> GetHeroesAsync()
+        {
+            IEnumerable<Hero> heroes = await _heroService.GetHeroesAsync();
+
+            HeroesResponse response = new();
+            response.Items = new List<HeroResponse>();
+
+            foreach (var hero in heroes)
+            {
+                response.Items.Add(new HeroResponse(hero));
+            }
+
+            return Ok(response);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<HeroResponse>> PostHeroAsync(Hero hero)
+        {
+            if (hero.Accidents == null || !hero.Accidents.Any() || hero.Accidents.Count() > 3)
+            {
+                return BadRequest("Hero need between 1 and 3 (included) accident types");
+            }
+            if (!hero.Email.Contains('@'))
+            {
+                return BadRequest("Invalid Email");
+            }
+
+            Hero? newHero = await _heroService.PostHeroAsync(hero);
+
+            HeroResponse response = new HeroResponse();
+
+            if (newHero != null)
+            {
+                response = new HeroResponse(newHero);
+                response.StatusCode = 201;
+            }
+            else
+            {
+                response.ErrorMessage = "Error while creating Hero";
+                response.StatusCode = 500;
+            }
+
+            return StatusCode(response.StatusCode, response);
+
+        }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHero(int id, Hero hero)
+        public async Task<ActionResult<HeroResponse>> PutHeroAsync(int id, Hero hero)
         {
             if (id != hero.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(hero).State = EntityState.Modified;
-
-            try
+            if (!await _heroService.HeroExistsAsync(id))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HeroExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound($"No Hero with id {id}");
             }
 
-            return NoContent();
+            Hero? updatedHero = await _heroService.PutHeroAsync(hero);
+
+            return Ok(updatedHero);
+
         }
 
-        // POST: api/Heroes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Hero>> PostHero(Hero hero)
-        {
-            if (_context.Heroes == null)
-            {
-                return Problem("Entity set 'ERoseDbContext.Heroes'  is null.");
-            }
-            _context.Heroes.Add(hero);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetHero", new { id = hero.Id }, hero);
-        }
-
-        // DELETE: api/Heroes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHero(int id)
+        public async Task<IActionResult> DeleteHeroAsync(int id)
         {
-            if (_context.Heroes == null)
+            if (await _heroService.HeroExistsAsync(id))
             {
-                return NotFound();
-            }
-            var hero = await _context.Heroes.FindAsync(id);
-            if (hero == null)
-            {
-                return NotFound();
-            }
+                bool isDeleted = await _heroService.DeleteHeroAsync(id);
 
-            _context.Heroes.Remove(hero);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                if (isDeleted)
+                {
+                    return Ok();
+                }
+                return NoContent();
+            }
+            return NotFound($"No Hero with id {id}");
         }
 
-        private bool HeroExists(int id)
-        {
-            return (_context.Heroes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

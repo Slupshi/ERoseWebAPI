@@ -17,13 +17,13 @@ namespace ERoseWebAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public void LoginAsync()
         {
 
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public void RegisterAsync()
         {
 
