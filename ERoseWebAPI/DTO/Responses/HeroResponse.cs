@@ -21,6 +21,7 @@ namespace ERoseWebAPI.DTO.Responses
 
         public HeroResponse(Hero model)
         {
+            Id = model.Id;
             HeroName = model.HeroName;
             FirstName = model.FirstName;
             LastName = model.LastName;

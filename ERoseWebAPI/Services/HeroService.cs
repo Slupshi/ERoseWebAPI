@@ -22,7 +22,26 @@ namespace ERoseWebAPI.Services
                                                                              .Include(h => h.Accidents)
                                                                              .FirstOrDefaultAsync(h => h.Id == id);
         // </inheritedoc>
-        public async Task<IEnumerable<Hero?>> GetHeroesAsync() => await _context.Heroes.ToListAsync();
+        public async Task<IEnumerable<Hero?>> GetHeroesAsync() => await _context.Heroes.Include(h => h.Accidents).Select(h => new Hero()
+        {
+            Id = h.Id,
+            HeroName = h.HeroName,
+            FirstName = h.FirstName,
+            LastName = h.LastName,
+            Email = h.Email,
+            PhoneNumber = h.PhoneNumber,
+            HeroScore = h.HeroScore,
+            Latitude = h.Latitude,
+            Longitude = h.Longitude,
+            Accidents = h.Accidents.Select(a => new Accident()
+            {
+                Id = a.Id,
+                Name = a.Name,
+                IconCode = a.IconCode,
+                IconFontFamily = a.IconFontFamily,
+                IconFontPackage = a.IconFontPackage,
+            }).ToList(),
+        }).ToListAsync();
 
         // </inheritdoc>
         public async Task<IEnumerable<Hero?>> GetHeroesByAccidentTypeAsync(IEnumerable<Accident> accidents) => await _context.Heroes.Where(h => h.Accidents != null && h.Accidents.Intersect(accidents).Count() == accidents.Count()).ToListAsync();

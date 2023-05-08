@@ -29,6 +29,8 @@ namespace ERoseWebAPI.Data
             modelBuilder.Entity<Hero>().HasIndex(h => h.PhoneNumber).IsUnique();
 
             modelBuilder.Entity<Accident>().HasIndex(a => a.Name).IsUnique();
+
+            modelBuilder.Entity<Accident>().HasMany(a => a.Heroes).WithMany(h => h.Accidents);
         }
     }
 }
