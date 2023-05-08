@@ -13,7 +13,7 @@ namespace ERoseWebAPI.Services
             _context = context;
         }
 
-        public async Task<Accident?> GetAccidentAsync(int id) => await _context.Accidents.FirstOrDefaultAsync(a => a.Id == id);
+        public async Task<Accident?> GetAccidentAsync(int id) => await _context.Accidents.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
 
         public async Task<IEnumerable<Accident?>> GetAccidentsAsync() => await _context.Accidents.ToListAsync();
 
@@ -58,8 +58,8 @@ namespace ERoseWebAPI.Services
 
         public async Task<bool> AccidentExistsAsync(int id)
         {
-            Hero? Hero = await _context.Heroes.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
-            if (Hero != null)
+            Accident? accident = await _context.Accidents.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
+            if (accident != null)
             {
                 return true;
             }

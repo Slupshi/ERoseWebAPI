@@ -119,8 +119,8 @@ namespace ERoseWebAPI.Services
         // </inheritedoc>
         public async Task<bool> HeroExistsAsync(int id)
         {
-            Hero? Hero = await _context.Heroes.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
-            if (Hero != null)
+            Hero? hero = await _context.Heroes.AsNoTracking().FirstOrDefaultAsync(h => h.Id == id);
+            if (hero != null)
             {
                 return true;
             }
