@@ -34,7 +34,7 @@ namespace ERoseWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Accident>>> GetAccidentesAsync()
+        public async Task<ActionResult<IEnumerable<Accident>>> GetAccidentsAsync()
         {
             IEnumerable<Accident> accidents = await _accidentService.GetAccidentsAsync();
 

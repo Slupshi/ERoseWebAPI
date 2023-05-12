@@ -19,6 +19,7 @@ namespace ERoseWebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddMvc();
             services.AddSession();
@@ -67,6 +68,11 @@ namespace ERoseWebAPI
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
         {
             context.Database.EnsureCreated();
+
+            app.UseCors(builder => builder
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader());
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
