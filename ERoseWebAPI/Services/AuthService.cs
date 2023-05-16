@@ -4,6 +4,7 @@ using System.Text;
 using ERoseWebAPI.DTO.Requests;
 using ERoseWebAPI.DTO.Responses;
 using ERoseWebAPI.Helpers;
+using ERoseWebAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ERoseWebAPI.Services
@@ -20,15 +21,50 @@ namespace ERoseWebAPI.Services
         }
 
         //</inheritdoc>
-        public Task<LoginResponse> RegisterAsync(RegisterRequest request)
+        public async Task<LoginResponse> RegisterAsync(RegisterRequest request)
         {
-            throw new NotImplementedException();
+            Hero newHero = new()
+            {
+                HeroName = request.HeroName.Trim(),
+                Email = request.Email.Trim(),
+                Password = request.Password,
+                FirstName = request.FirstName?.Trim(),
+                LastName = request.LastName?.Trim(),
+                PhoneNumber = request.PhoneNumber.Trim(),
+                Latitude = request.Latitude,
+                Longitude = request.Longitude,
+                Accidents = request.Accidents,
+            };
+
+            Hero? dbHero = await _heroService.PostHeroAsync(newHero);
+
+            if (PasswordHelper.VerifyPassword(request.Password, dbHero.Password))
+            {
+                List<Claim> claims = new List<Claim>
+                    {
+                        new(ClaimTypes.MobilePhone, dbHero.PhoneNumber),
+                        new(ClaimTypes.Email, dbHero.Email),
+                    };
+
+                LoginResponse response = new()
+                {
+                    Hero = new HeroResponse(dbHero),
+                    Token = CreateJWT(_configuration["Jwt:Key"]!, claims),
+                    StatusCode = StatusCodes.Status200OK,
+                };
+                return response;
+            }
+            return new LoginResponse()
+            {
+                ErrorMessage = $"Internal Error",
+                StatusCode = StatusCodes.Status500InternalServerError,
+            };
         }
 
         //</inheritdoc>
-        public async Task<LoginResponse> LoginAsync(string phoneNumber, string password)
+        public async Task<LoginResponse> LoginAsync(string email, string password)
         {
-            var dbHero = await _heroService.GetHeroesByPhoneNumberAsync(phoneNumber);
+            var dbHero = await _heroService.GetHeroesByEmailAsync(email);
 
             if (dbHero != null)
             {
@@ -37,6 +73,7 @@ namespace ERoseWebAPI.Services
                     List<Claim> claims = new List<Claim>
                     {
                         new(ClaimTypes.MobilePhone, dbHero.PhoneNumber),
+                        new(ClaimTypes.Email, dbHero.Email),
                     };
 
                     LoginResponse response = new()
@@ -55,7 +92,7 @@ namespace ERoseWebAPI.Services
             }
             return new LoginResponse()
             {
-                ErrorMessage = $"No User with phone number : {phoneNumber} exists",
+                ErrorMessage = $"No User with mail : {email} exists",
                 StatusCode = StatusCodes.Status404NotFound,
             };
         }

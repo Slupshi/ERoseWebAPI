@@ -23,6 +23,12 @@ namespace ERoseWebAPI.Services
         /// <returns>A Hero entity</returns>
         public Task<Hero?> GetHeroesByPhoneNumberAsync(string phoneNumber);
         /// <summary>
+        /// Get a Hero with it's email
+        /// </summary>
+        /// <param name="email">Desired email</param>
+        /// <returns>A Hero entity</returns>
+        public Task<Hero?> GetHeroesByEmailAsync(string email);
+        /// <summary>
         /// Get all Hero entities
         /// </summary>
         /// <returns>A Hero entities collection</returns>

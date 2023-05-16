@@ -67,6 +67,9 @@ namespace ERoseWebAPI.Services
         // </inheritdoc>
         public async Task<Hero?> GetHeroesByPhoneNumberAsync(string phoneNumber) => await _context.Heroes.FirstOrDefaultAsync(h => h.PhoneNumber == phoneNumber);
 
+        // </inheritdoc>
+        public async Task<Hero?> GetHeroesByEmailAsync(string email) => await _context.Heroes.FirstOrDefaultAsync(h => h.Email == email);
+
         // </inheritedoc>
         public async Task<Hero?> PostHeroAsync(Hero model)
         {
