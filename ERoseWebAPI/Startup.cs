@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 using ERoseWebAPI.Data;
+using ERoseWebAPI.Data.Seeders;
 using ERoseWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -68,6 +69,8 @@ namespace ERoseWebAPI
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
         {
             context.Database.EnsureCreated();
+
+            AccidentSeeder.Seed(context);
 
             app.UseCors(builder => builder
                  .AllowAnyOrigin()
