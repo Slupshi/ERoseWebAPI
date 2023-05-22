@@ -45,9 +45,9 @@ namespace ERoseWebAPI.Data.Seeders
                     var dbAccidents = context.Accidents.OrderBy(a => a.Id).ToList();
                     var accidents = new List<Accident>
                     {
-                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id + 1)),
-                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id + 1)),
-                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id + 1)),
+                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
+                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
+                        dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
                     };
                     hero.Accidents = accidents;
 
