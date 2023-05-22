@@ -33,6 +33,14 @@ namespace ERoseWebAPI.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<LoginResponse>> RegisterAsync(RegisterRequest request)
         {
+            if (request.Accidents == null || !request.Accidents.Any() || request.Accidents.Count() > 3)
+            {
+                return BadRequest("Hero need between 1 and 3 (included) accident types");
+            }
+            if (!request.Email.Contains('@'))
+            {
+                return BadRequest("Invalid Email");
+            }
             return await _authService.RegisterAsync(request);
         }
 
