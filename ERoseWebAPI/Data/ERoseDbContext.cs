@@ -33,7 +33,6 @@ namespace ERoseWebAPI.Data
 
             modelBuilder.Entity<Accident>().HasMany(a => a.Heroes).WithMany(h => h.Accidents);
 
-            modelBuilder.Entity<Declaration>().HasOne(d => d.Hero).WithMany(h => h.Declarations);
             modelBuilder.Entity<Declaration>().HasOne(d => d.Accident).WithMany(a => a.Declarations);
         }
     }

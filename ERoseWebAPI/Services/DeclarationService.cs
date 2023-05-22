@@ -23,15 +23,6 @@ namespace ERoseWebAPI.Services
 
         public async Task<Declaration?> PostDeclarationAsync(Declaration model)
         {
-            if (model.Hero?.Id != null)
-            {
-                Hero? hero = await _heroService.GetHeroAsync(model.Hero.Id);
-                if (hero != null)
-                {
-                    model.Hero = hero;
-                }
-            }
-
             if (model.Accident?.Id != null)
             {
                 Accident? accident = await _accidentService.GetAccidentAsync(model.Accident.Id);
@@ -52,15 +43,6 @@ namespace ERoseWebAPI.Services
 
         public async Task<Declaration?> PutDeclarationAsync(Declaration model)
         {
-            if (model.Hero?.Id != null)
-            {
-                Hero? hero = await _heroService.GetHeroAsync(model.Hero.Id);
-                if (hero != null)
-                {
-                    model.Hero = hero;
-                }
-            }
-
             if (model.Accident?.Id != null)
             {
                 Accident? accident = await _accidentService.GetAccidentAsync(model.Accident.Id);
