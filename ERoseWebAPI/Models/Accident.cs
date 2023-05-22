@@ -10,5 +10,6 @@
         public string? IconFontPackage { get; set; }
 
         public virtual IEnumerable<Hero>? Heroes { get; set; }
+        public virtual IEnumerable<Declaration>? Declarations { get; set; }
     }
 }

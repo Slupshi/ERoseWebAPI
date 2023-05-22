@@ -14,6 +14,7 @@ namespace ERoseWebAPI.Data
 
         public virtual DbSet<Hero> Heroes { get; set; }
         public virtual DbSet<Accident> Accidents { get; set; }
+        public virtual DbSet<Declaration> Declarations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +32,9 @@ namespace ERoseWebAPI.Data
             modelBuilder.Entity<Accident>().HasIndex(a => a.Name).IsUnique();
 
             modelBuilder.Entity<Accident>().HasMany(a => a.Heroes).WithMany(h => h.Accidents);
+
+            modelBuilder.Entity<Declaration>().HasOne(d => d.Hero).WithMany(h => h.Declarations);
+            modelBuilder.Entity<Declaration>().HasOne(d => d.Accident).WithMany(a => a.Declarations);
         }
     }
 }

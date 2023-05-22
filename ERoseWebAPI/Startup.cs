@@ -64,6 +64,7 @@ namespace ERoseWebAPI
             services.AddScoped<IAccidentService, AccidentService>();
             services.AddScoped<IHeroService, HeroService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IDeclarationService, DeclarationService>();
         }
 
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
@@ -71,6 +72,7 @@ namespace ERoseWebAPI
             context.Database.EnsureCreated();
 
             AccidentSeeder.Seed(context);
+            HeroSeeder.Seed(context);
 
             app.UseCors(builder => builder
                  .AllowAnyOrigin()
