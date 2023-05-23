@@ -41,6 +41,18 @@ namespace ERoseWebAPI.Controllers
             {
                 return BadRequest("Invalid Email");
             }
+            if (await _authService.IsHeroNameTaken(request.HeroName))
+            {
+                return BadRequest($"Le nom {request.HeroName} est déjà utilisé");
+            }
+            if (await _authService.IsEmailTaken(request.Email))
+            {
+                return BadRequest($"L'email {request.Email} est déjà utilisé");
+            }
+            if (await _authService.IsPhoneNumberTaken(request.PhoneNumber))
+            {
+                return BadRequest($"Le numéro de téléphone {request.PhoneNumber} est déjà utilisé");
+            }
             return await _authService.RegisterAsync(request);
         }
 

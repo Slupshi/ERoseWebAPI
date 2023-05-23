@@ -31,5 +31,23 @@ namespace ERoseWebAPI.Services
         /// </summary>
         /// <returns>Not implemented yet</returns>
         public string CreateRefreshToken();
+        /// <summary>
+        /// Check if a user can use this heroname
+        /// </summary>
+        /// <param name="heroName">The user's desired name</param>
+        /// <returns></returns>
+        public Task<bool> IsHeroNameTaken(string heroName);
+        /// <summary>
+        /// Check if a user can use this email
+        /// </summary>
+        /// <param name="email">The user's desired email</param>
+        /// <returns></returns>
+        public Task<bool> IsEmailTaken(string email);
+        /// <summary>
+        /// Check if a user can use this phone number
+        /// </summary>
+        /// <param name="phoneNumber">The user's desired phone number</param>
+        /// <returns></returns>
+        public Task<bool> IsPhoneNumberTaken(string phoneNumber);
     }
 }

@@ -118,6 +118,24 @@ namespace ERoseWebAPI.Services
         }
 
         //</inheritdoc>
+        public async Task<bool> IsHeroNameTaken(string heroName)
+        {
+            return (await _heroService.GetHeroesAsync()).Any(h => h != null && h.HeroName.Trim() == heroName.Trim());
+        }
+
+        //</inheritdoc>
+        public async Task<bool> IsEmailTaken(string email)
+        {
+            return (await _heroService.GetHeroesAsync()).Any(h => h != null && h.Email.Trim() == email.Trim());
+        }
+
+        //</inheritdoc>
+        public async Task<bool> IsPhoneNumberTaken(string phoneNumber)
+        {
+            return (await _heroService.GetHeroesAsync()).Any(h => h != null && h.PhoneNumber.Trim() == phoneNumber.Trim());
+        }
+
+        //</inheritdoc>
         public string CreateRefreshToken()
         {
             throw new NotImplementedException();
