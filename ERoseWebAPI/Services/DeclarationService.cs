@@ -19,7 +19,23 @@ namespace ERoseWebAPI.Services
 
         public async Task<Declaration?> GetDeclarationAsync(int id) => await _context.Declarations.FirstOrDefaultAsync(a => a.Id == id);
 
-        public async Task<IEnumerable<Declaration?>> GetDeclarationsAsync() => await _context.Declarations.ToListAsync();
+        public async Task<IEnumerable<Declaration?>> GetDeclarationsAsync() => await _context.Declarations.Include(d => d.Accident).Select(d => new Declaration()
+        {
+            Id = d.Id,
+            CityName = d.CityName,
+            Description = d.Description,
+            CreatedAt = d.CreatedAt,
+            Latitude = d.Latitude,
+            Longitude = d.Longitude,
+            Accident = new Accident()
+            {
+                Id = d.Accident.Id,
+                Name = d.Accident.Name,
+                IconCode = d.Accident.IconCode,
+                IconFontFamily = d.Accident.IconFontFamily,
+                IconFontPackage = d.Accident.IconFontPackage,
+            }
+        }).ToListAsync();
 
         public async Task<Declaration?> PostDeclarationAsync(Declaration model)
         {

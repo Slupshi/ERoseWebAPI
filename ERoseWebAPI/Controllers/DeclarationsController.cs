@@ -23,33 +23,33 @@ namespace ERoseWebAPI.Controllers
                 return NotFound($"No Declaration with id {id}");
             }
 
-            Declaration? Declaration = await _declarationService.GetDeclarationAsync(id);
+            Declaration? declarations = await _declarationService.GetDeclarationAsync(id);
 
-            if (Declaration == null)
+            if (declarations == null)
             {
                 return NotFound($"No Declaration with id {id}");
             }
 
-            return Ok(Declaration);
+            return Ok(declarations);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Declaration>>> GetDeclarationsAsync()
         {
-            IEnumerable<Declaration> Declarations = await _declarationService.GetDeclarationsAsync();
+            IEnumerable<Declaration> declarations = await _declarationService.GetDeclarationsAsync();
 
-            if (Declarations != null)
+            if (declarations != null)
             {
-                return Ok(Declarations);
+                return Ok(declarations);
             }
             return NotFound();
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<Declaration>> PostDeclarationAsync(Declaration Declaration)
+        public async Task<ActionResult<Declaration>> PostDeclarationAsync(Declaration declaration)
         {
-            Declaration? newDeclaration = await _declarationService.PostDeclarationAsync(Declaration);
+            Declaration? newDeclaration = await _declarationService.PostDeclarationAsync(declaration);
 
             if (newDeclaration != null)
             {
@@ -63,9 +63,9 @@ namespace ERoseWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Declaration>> PutDeclarationAsync(int id, Declaration Declaration)
+        public async Task<ActionResult<Declaration>> PutDeclarationAsync(int id, Declaration declaration)
         {
-            if (id != Declaration.Id)
+            if (id != declaration.Id)
             {
                 return BadRequest();
             }
@@ -74,7 +74,7 @@ namespace ERoseWebAPI.Controllers
                 return NotFound($"No Declaration with id {id}");
             }
 
-            Declaration? updatedDeclaration = await _declarationService.PutDeclarationAsync(Declaration);
+            Declaration? updatedDeclaration = await _declarationService.PutDeclarationAsync(declaration);
 
             return Ok(updatedDeclaration);
 
