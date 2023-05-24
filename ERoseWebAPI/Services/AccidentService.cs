@@ -14,6 +14,7 @@ namespace ERoseWebAPI.Services
         }
 
         public async Task<Accident?> GetAccidentAsync(int id) => await _context.Accidents.FirstOrDefaultAsync(a => a.Id == id);
+        public async Task<Accident?> GetAccidentAsNoTrackingAsync(int id) => await _context.Accidents.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
 
         public async Task<IEnumerable<Accident?>> GetAccidentsAsync() => await _context.Accidents.ToListAsync();
 
@@ -31,7 +32,7 @@ namespace ERoseWebAPI.Services
 
         public async Task<Accident?> PutAccidentAsync(Accident model)
         {
-            Accident? dbAccident = await GetAccidentAsync(model.Id);
+            Accident? dbAccident = await GetAccidentAsNoTrackingAsync(model.Id);
 
             model.Name = model.Name.Trim();
             model.Description = model.Description.Trim();

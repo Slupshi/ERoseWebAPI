@@ -10,6 +10,7 @@ namespace ERoseWebAPI.Services
         /// <param name="id">Accident's id</param>
         /// <returns>A Accident entity</returns>
         public Task<Accident?> GetAccidentAsync(int id);
+        public Task<Accident?> GetAccidentAsNoTrackingAsync(int id);
         /// <summary>
         /// Get all Accident entities
         /// </summary>
