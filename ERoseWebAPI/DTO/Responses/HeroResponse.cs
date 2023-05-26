@@ -15,7 +15,7 @@ namespace ERoseWebAPI.DTO.Responses
 
         public int HeroScore { get; set; }
 
-        public virtual IEnumerable<Accident>? Accidents { get; set; }
+        public virtual IEnumerable<AccidentType>? Accidents { get; set; }
 
         public HeroResponse() { }
 
@@ -27,7 +27,7 @@ namespace ERoseWebAPI.DTO.Responses
             LastName = model.LastName;
             Email = model.Email;
             PhoneNumber = model.PhoneNumber;
-            Accidents = model.Accidents;
+            Accidents = model.AccidentTypes;
             Longitude = model.Longitude;
             Latitude = model.Latitude;
             HeroScore = model.HeroScore;

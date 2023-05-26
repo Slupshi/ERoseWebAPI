@@ -61,17 +61,17 @@ namespace ERoseWebAPI
             });
 
             services.AddDbContext<ERoseDbContext>();
-            services.AddScoped<IAccidentService, AccidentService>();
+            services.AddScoped<IAccidentTypeService, AccidentTypeService>();
             services.AddScoped<IHeroService, HeroService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IDeclarationService, DeclarationService>();
+            services.AddScoped<IHazardService, HazardService>();
         }
 
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
         {
             context.Database.EnsureCreated();
 
-            AccidentSeeder.Seed(context);
+            AccidentTypeSeeder.Seed(context);
             HeroSeeder.Seed(context);
 
             app.UseCors(builder => builder
