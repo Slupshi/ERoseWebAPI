@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text;
 using ERoseWebAPI.Data;
+using ERoseWebAPI.Data.Seeders;
+using ERoseWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -18,6 +20,7 @@ namespace ERoseWebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddMvc();
             services.AddSession();
@@ -58,11 +61,23 @@ namespace ERoseWebAPI
             });
 
             services.AddDbContext<ERoseDbContext>();
+            services.AddScoped<IAccidentTypeService, AccidentTypeService>();
+            services.AddScoped<IHeroService, HeroService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IHazardService, HazardService>();
         }
 
         public void Configure(IApplicationBuilder app, ERoseDbContext context)
         {
             context.Database.EnsureCreated();
+
+            AccidentTypeSeeder.Seed(context);
+            HeroSeeder.Seed(context);
+
+            app.UseCors(builder => builder
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader());
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
