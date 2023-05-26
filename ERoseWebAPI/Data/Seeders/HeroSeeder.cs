@@ -42,14 +42,14 @@ namespace ERoseWebAPI.Data.Seeders
             {
                 if (!context.Heroes.Any(h => h.HeroName == hero.HeroName))
                 {
-                    var dbAccidents = context.Accidents.OrderBy(a => a.Id).ToList();
-                    var accidents = new List<Accident>
+                    var dbAccidents = context.AccidentTypes.OrderBy(a => a.Id).ToList();
+                    var accidents = new List<AccidentType>
                     {
                         dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
                         dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
                         dbAccidents.ElementAt(_random.Next(dbAccidents.First().Id, dbAccidents.Last().Id)),
                     };
-                    hero.Accidents = accidents;
+                    hero.AccidentTypes = accidents;
 
                     context.Heroes.Add(hero);
                     context.SaveChanges();

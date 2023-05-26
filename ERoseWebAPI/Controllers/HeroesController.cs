@@ -54,7 +54,7 @@ namespace ERoseWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<HeroResponse>> PostHeroAsync(Hero hero)
         {
-            if (hero.Accidents == null || !hero.Accidents.Any() || hero.Accidents.Count() > 3)
+            if (hero.AccidentTypes == null || !hero.AccidentTypes.Any() || hero.AccidentTypes.Count() > 3)
             {
                 return BadRequest("Hero need between 1 and 3 (included) accident types");
             }

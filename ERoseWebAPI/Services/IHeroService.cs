@@ -15,7 +15,7 @@ namespace ERoseWebAPI.Services
         /// </summary>
         /// <param name="accidents">All accident type you search</param>
         /// <returns>A Hero entities collection</returns>
-        public Task<IEnumerable<Hero?>> GetHeroesByAccidentTypeAsync(IEnumerable<Accident> accidents);
+        public Task<IEnumerable<Hero?>> GetHeroesByAccidentTypeAsync(IEnumerable<AccidentType> accidents);
         /// <summary>
         /// Get a Hero with it's phone number
         /// </summary>

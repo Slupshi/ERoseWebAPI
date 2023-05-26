@@ -8,17 +8,17 @@ namespace ERoseWebAPI.Services
     public class HeroService : IHeroService
     {
         private readonly ERoseDbContext _context;
-        private readonly IAccidentService _accidentService;
+        private readonly IAccidentTypeService _accidentTypeService;
 
-        public HeroService(ERoseDbContext context, IAccidentService accidentService)
+        public HeroService(ERoseDbContext context, IAccidentTypeService accidentTypeService)
         {
             _context = context;
-            _accidentService = accidentService;
+            _accidentTypeService = accidentTypeService;
         }
 
 
         // </inheritedoc>
-        public async Task<Hero?> GetHeroAsync(int id) => (await _context.Heroes.AsNoTracking().Include(h => h.Accidents).Select(h => new Hero()
+        public async Task<Hero?> GetHeroAsync(int id) => (await _context.Heroes.AsNoTracking().Include(h => h.AccidentTypes).Select(h => new Hero()
         {
             Id = h.Id,
             HeroName = h.HeroName,
@@ -29,7 +29,7 @@ namespace ERoseWebAPI.Services
             HeroScore = h.HeroScore,
             Latitude = h.Latitude,
             Longitude = h.Longitude,
-            Accidents = h.Accidents.Select(a => new Accident()
+            AccidentTypes = h.AccidentTypes.Select(a => new AccidentType()
             {
                 Id = a.Id,
                 Name = a.Name,
@@ -40,7 +40,7 @@ namespace ERoseWebAPI.Services
         }).ToListAsync()).FirstOrDefault(h => h.Id == id);
 
         // </inheritedoc>
-        public async Task<IEnumerable<Hero?>> GetHeroesAsync() => await _context.Heroes.Include(h => h.Accidents).Select(h => new Hero()
+        public async Task<IEnumerable<Hero?>> GetHeroesAsync() => await _context.Heroes.Include(h => h.AccidentTypes).Select(h => new Hero()
         {
             Id = h.Id,
             HeroName = h.HeroName,
@@ -51,7 +51,7 @@ namespace ERoseWebAPI.Services
             HeroScore = h.HeroScore,
             Latitude = h.Latitude,
             Longitude = h.Longitude,
-            Accidents = h.Accidents.Select(a => new Accident()
+            AccidentTypes = h.AccidentTypes.Select(a => new AccidentType()
             {
                 Id = a.Id,
                 Name = a.Name,
@@ -62,7 +62,7 @@ namespace ERoseWebAPI.Services
         }).ToListAsync();
 
         // </inheritdoc>
-        public async Task<IEnumerable<Hero?>> GetHeroesByAccidentTypeAsync(IEnumerable<Accident> accidents) => await _context.Heroes.Where(h => h.Accidents != null && h.Accidents.Intersect(accidents).Count() == accidents.Count()).ToListAsync();
+        public async Task<IEnumerable<Hero?>> GetHeroesByAccidentTypeAsync(IEnumerable<AccidentType> accidents) => await _context.Heroes.Where(h => h.AccidentTypes != null && h.AccidentTypes.Intersect(accidents).Count() == accidents.Count()).ToListAsync();
 
         // </inheritdoc>
         public async Task<Hero?> GetHeroesByPhoneNumberAsync(string phoneNumber) => await _context.Heroes.FirstOrDefaultAsync(h => h.PhoneNumber == phoneNumber);
@@ -73,21 +73,21 @@ namespace ERoseWebAPI.Services
         // </inheritedoc>
         public async Task<Hero?> PostHeroAsync(Hero model)
         {
-            if (model.Accidents != null)
+            if (model.AccidentTypes != null)
             {
-                List<Accident> accidents = new List<Accident>();
-                foreach (var accident in model.Accidents)
+                List<AccidentType> accidents = new List<AccidentType>();
+                foreach (var accident in model.AccidentTypes)
                 {
                     if (accident.Id != null)
                     {
-                        Accident? dbAccident = await _accidentService.GetAccidentAsync(accident.Id);
+                        AccidentType? dbAccident = await _accidentTypeService.GetAccidentTypeAsync(accident.Id);
                         if (dbAccident != null)
                         {
                             accidents.Add(dbAccident);
                         }
                     }
                 }
-                model.Accidents = accidents;
+                model.AccidentTypes = accidents;
             }
 
             if (model.FirstName != null)
@@ -115,25 +115,25 @@ namespace ERoseWebAPI.Services
         {
             Hero? dbHero = await GetHeroAsync(model.Id);
 
-            if (model.Accidents != null)
+            if (model.AccidentTypes != null)
             {
-                List<Accident> accidents = new List<Accident>();
-                foreach (var accident in model.Accidents)
+                List<AccidentType> accidents = new List<AccidentType>();
+                foreach (var accident in model.AccidentTypes)
                 {
                     if (accident.Id != null)
                     {
-                        Accident? dbAccident = await _accidentService.GetAccidentAsync(accident.Id);
+                        AccidentType? dbAccident = await _accidentTypeService.GetAccidentTypeAsync(accident.Id);
                         if (dbAccident != null)
                         {
                             accidents.Add(dbAccident);
                         }
                     }
                 }
-                model.Accidents = accidents;
+                model.AccidentTypes = accidents;
             }
             else
             {
-                model.Accidents = dbHero.Accidents;
+                model.AccidentTypes = dbHero.AccidentTypes;
             }
 
             if (model.FirstName != null)

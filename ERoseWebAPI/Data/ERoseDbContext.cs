@@ -13,8 +13,8 @@ namespace ERoseWebAPI.Data
         }
 
         public virtual DbSet<Hero> Heroes { get; set; }
-        public virtual DbSet<Accident> Accidents { get; set; }
-        public virtual DbSet<Declaration> Declarations { get; set; }
+        public virtual DbSet<AccidentType> AccidentTypes { get; set; }
+        public virtual DbSet<Hazard> Hazards { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,11 +29,11 @@ namespace ERoseWebAPI.Data
             modelBuilder.Entity<Hero>().HasIndex(h => h.Email).IsUnique();
             modelBuilder.Entity<Hero>().HasIndex(h => h.PhoneNumber).IsUnique();
 
-            modelBuilder.Entity<Accident>().HasIndex(a => a.Name).IsUnique();
+            modelBuilder.Entity<AccidentType>().HasIndex(a => a.Name).IsUnique();
 
-            modelBuilder.Entity<Accident>().HasMany(a => a.Heroes).WithMany(h => h.Accidents);
+            modelBuilder.Entity<AccidentType>().HasMany(a => a.Heroes).WithMany(h => h.AccidentTypes);
 
-            modelBuilder.Entity<Declaration>().HasOne(d => d.Accident).WithMany(a => a.Declarations);
+            modelBuilder.Entity<Hazard>().HasOne(d => d.AccidentType).WithMany(a => a.Hazards);
         }
     }
 }

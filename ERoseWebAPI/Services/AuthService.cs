@@ -33,7 +33,7 @@ namespace ERoseWebAPI.Services
                 PhoneNumber = request.PhoneNumber.Trim(),
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
-                Accidents = request.Accidents,
+                AccidentTypes = request.Accidents,
             };
 
             Hero? dbHero = await _heroService.PostHeroAsync(newHero);

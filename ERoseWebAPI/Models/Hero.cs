@@ -14,6 +14,6 @@
 
         public int HeroScore { get; set; }
 
-        public virtual IEnumerable<Accident>? Accidents { get; set; }
+        public virtual IEnumerable<AccidentType>? AccidentTypes { get; set; }
     }
 }

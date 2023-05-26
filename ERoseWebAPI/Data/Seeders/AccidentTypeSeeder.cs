@@ -2,11 +2,11 @@
 
 namespace ERoseWebAPI.Data.Seeders
 {
-    public class AccidentSeeder
+    public class AccidentTypeSeeder
     {
-        private static readonly List<Accident> _defaultAccidents = new()
+        private static readonly List<AccidentType> _defaultAccidents = new()
         {
-            new Accident()
+            new AccidentType()
             {
                 Name = "Incendie",
                 Description = "Le feu ça brûle.\nSi vous voyez une habitation, un bâtiment public ou toutes poubelles entrain de brûler, signalez le au plus vite !",
@@ -14,7 +14,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontFamily = "MaterialIcons",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Accident routier",
                 Description = "Un carambolage ? Un débris sur la route ou tout simplement une voiture emmanchée dans un platane ?\nAlors vous êtes dans la bonne catégorie",
@@ -23,7 +23,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Accident fluviale",
                 Description = "Un bateau est censé être sur l'eau, ni sur terre ni sous l'eau",
@@ -31,7 +31,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontFamily = "MaterialIcons",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Accident aérien",
                 Description = "Un avion au sol qui n'est pas sur ces roues, ou qui est éventré",
@@ -40,7 +40,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Eboulement",
                 Description = "Si vous constatez des rochers sur la routes ou bien sur votre maison (celles de vos voisins comprises)",
@@ -48,7 +48,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontFamily = "MaterialIcons",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Invasion de serpent",
                 Description = "Les serpents n'ont rien à faire en liberté en plein centre-ville !",
@@ -57,7 +57,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Fuite de gaz",
                 Description = "Les flatulences de vos camarades ne sont pas inclues !",
@@ -66,7 +66,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Manifestation",
                 Description = "Si vous voyez des pavés ou des molotovs voler",
@@ -75,7 +75,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Braquage",
                 Description = "En général cet incident est caractérisé par des personnes cagoulées entrain de voler d'autres personnes.\nCependant parfois elles peuvent aussi se revêtir d'un costume cravate.",
@@ -84,7 +84,7 @@ namespace ERoseWebAPI.Data.Seeders
                 IconFontPackage = "font_awesome_flutter",
                 CreatedAt = DateTime.Now,
             },
-            new Accident()
+            new AccidentType()
             {
                 Name = "Evasion de prisonnier",
                 Description = "Une personne habillée en tenue de prisonnier (hors halloween)",
@@ -99,7 +99,7 @@ namespace ERoseWebAPI.Data.Seeders
         {
             foreach (var accident in _defaultAccidents)
             {
-                if (!context.Accidents.Any(a => a.Name == accident.Name))
+                if (!context.AccidentTypes.Any(a => a.Name == accident.Name))
                 {
                     context.Add(accident);
                     context.SaveChanges();

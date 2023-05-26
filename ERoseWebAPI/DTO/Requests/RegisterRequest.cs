@@ -13,6 +13,6 @@ namespace ERoseWebAPI.DTO.Requests
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public List<Accident> Accidents { get; set; }
+        public List<AccidentType> Accidents { get; set; }
     }
 }
